@@ -2,6 +2,9 @@ package com.example.roomdatabase
 
 import android.content.Context
 import android.os.AsyncTask
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class UserRepository(context: Context) {
 
@@ -29,10 +32,12 @@ class UserRepository(context: Context) {
     }
 
     private class insertAsyncTask internal constructor(private val usersDao: UserDao) :
-        AsyncTask<Users, Void, Void>() {
+            AsyncTask<Users, Void, Void>() {
 
         override fun doInBackground(vararg params: Users): Void? {
-            usersDao.insertUser(params[0])
+            GlobalScope.launch(Dispatchers.IO) {
+                usersDao.insertUser(params[0])
+            }
             return null
         }
     }

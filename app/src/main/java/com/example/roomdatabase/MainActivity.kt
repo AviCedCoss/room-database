@@ -8,6 +8,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.roomdatabase.databinding.ActivityAddUserBinding
 import com.example.roomdatabase.databinding.ActivityMainBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -52,7 +55,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun fetchUsers() {
-        val allUsers = repo.getAllUsers()
-        adapter.setUsers(allUsers)
+        GlobalScope.launch(Dispatchers.IO) {
+            val allUsers = repo.getAllUsers()
+            adapter.setUsers(allUsers)
+        }
+
     }
 }
